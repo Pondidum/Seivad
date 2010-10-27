@@ -5,7 +5,7 @@ using System.Text;
 
 namespace Seivad
 {
-    class Container
+    public class Container
     {
 
         private readonly IDictionary<Type, ObjectGraph> _registry;
@@ -37,60 +37,7 @@ namespace Seivad
 
             return _registry[type].GetIntance<T>();
         }
+
     }
 
-    class ObjectGraph
-    {
-
-        private Func<Object> _create;
-        private readonly List<Action<Object>> _modifiers;
-
-        public ObjectGraph()
-        {
-            _create = null;
-            _modifiers = new List<Action<object>>();
-        }
-
-        internal void SetCreation(Func<Object> action)
-        {
-            _create = action;
-        }
-
-        internal void AddModifier(Action<object> modifier)
-        {
-            _modifiers.Add(modifier);
-        }
-        
-        internal T GetIntance<T>()
-        {
-            var obj = _create();
-
-            _modifiers.ForEach(modifier => modifier(obj));
-
-            return (T)obj;
-        }
-    }
-
-    class ObjectSetup<T>
-    {
-
-        private readonly ObjectGraph _graph;
-
-        public ObjectSetup(ObjectGraph graph)
-        {
-            _graph = graph;
-        }
-
-        public ObjectSetup<T> Returns()
-        {
-            _graph.SetCreation(() => Activator.CreateInstance(typeof(T)));
-            return this;
-        }
-
-        public ObjectSetup<T> OnCreation(Action<T> action)
-        {
-            _graph.AddModifier(obj => action.Invoke((T)obj));
-            return this;
-        }
-    }
 }
