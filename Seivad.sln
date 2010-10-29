@@ -3,6 +3,8 @@ Microsoft Visual Studio Solution File, Format Version 11.00
 # Visual Studio 2010
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Seivad", "Seivad\Seivad.csproj", "{B650B096-06F5-4F28-A089-D2AC51B885BB}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Seivad.Specs", "Seivad.Specs\Seivad.Specs.csproj", "{883F2A17-2C19-47DF-B481-1C5E028A0E9C}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -13,6 +15,10 @@ Global
 		{B650B096-06F5-4F28-A089-D2AC51B885BB}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{B650B096-06F5-4F28-A089-D2AC51B885BB}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{B650B096-06F5-4F28-A089-D2AC51B885BB}.Release|Any CPU.Build.0 = Release|Any CPU
+		{883F2A17-2C19-47DF-B481-1C5E028A0E9C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{883F2A17-2C19-47DF-B481-1C5E028A0E9C}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{883F2A17-2C19-47DF-B481-1C5E028A0E9C}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{883F2A17-2C19-47DF-B481-1C5E028A0E9C}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
