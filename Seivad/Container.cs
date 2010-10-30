@@ -8,24 +8,25 @@ namespace Seivad
     public class Container
     {
 
-        private readonly IDictionary<Type, ObjectGraph> _registry;
+        private readonly IDictionary<Type, ObjectCreator> _registry;
 
         public Container() {
-            _registry = new Dictionary<Type, ObjectGraph>();
+            _registry = new Dictionary<Type, ObjectCreator>();
         }
 
-        public ObjectSetup<T> Register<T>()
+        internal void AddRegistration(Type requestedType, ObjectCreator creator)
         {
-            var type = typeof(T);
+            _registry.Add(requestedType, creator);
+        }
+
+        public ObjectSetup<TRequest> Register<TRequest>()
+        {
+            var type = typeof(TRequest);
 
             if (_registry.ContainsKey(type))
                 throw new ArgumentException(string.Format("The type {0} has already been registered.", type.Name));
-
-            var graph = new ObjectGraph();
-
-            _registry.Add(type, graph);
-
-            return new ObjectSetup<T>(graph);
+            
+            return new ObjectSetup<TRequest>(this);
         }
 
         public T GetIntance<T>() {
@@ -35,7 +36,7 @@ namespace Seivad
             if (!_registry.ContainsKey(type))
                 throw new ArgumentException(string.Format("The type {0} has not been registered", type.Name));
 
-            return _registry[type].GetIntance<T>();
+            return (T)_registry[type].GetInstance();
         }
 
     }

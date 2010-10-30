@@ -5,25 +5,39 @@ using System.Text;
 
 namespace Seivad
 {
-    public class ObjectSetup<T>
+    public class ObjectSetup<TRequest>
     {
 
-        private readonly ObjectGraph _graph;
+        private readonly ObjectCreator _creator;
+        private readonly Container _container;
 
-        internal ObjectSetup(ObjectGraph graph)
+        internal ObjectSetup(Container container)
         {
-            _graph = graph;
+            _container = container;
+            _creator = new ObjectCreator();
+            _container.AddRegistration(typeof(TRequest ), _creator);
         }
 
-        public ObjectSetup<T> Returns()
+        internal ObjectSetup(ObjectCreator creator)
         {
-            _graph.SetCreation(() => Activator.CreateInstance(typeof(T)));
+            _creator = creator;
+        }
+
+        public ObjectSetup<TRequest> Returns<TReturn>()
+        {
+            _creator.ReturnType = typeof(TReturn);
             return this;
         }
 
-        public ObjectSetup<T> OnCreation(Action<T> action)
+        public ObjectSetup<TRequest> OnCreation(Action<TRequest> action)
         {
-            _graph.AddModifier(obj => action.Invoke((T)obj));
+            _creator.SetOnCreation(obj => action.Invoke((TRequest)obj));
+            return this;
+        }
+
+        public ObjectSetup<TRequest> IsSingleton()
+        {
+            _creator.IsSingleton = true;
             return this;
         }
     }
