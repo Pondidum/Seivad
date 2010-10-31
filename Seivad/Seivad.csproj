@@ -40,8 +40,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Arguments\Argument.cs" />
-    <Compile Include="Arguments\Arguments.cs" />
+    <Compile Include="Arguments.cs" />
     <Compile Include="Container.cs" />
     <Compile Include="ObjectCreator.cs" />
     <Compile Include="ObjectSetup.cs" />

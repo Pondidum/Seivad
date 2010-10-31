@@ -4,8 +4,8 @@ Class TestClass
 
     Private _test As String
 
-    Public Sub New(ByVal value As String)
-        _test = value
+    Public Sub New(ByVal value As String, ByVal another As String)
+        _test = value & another
     End Sub
 
     Public Property Test As String Implements ITest.Test

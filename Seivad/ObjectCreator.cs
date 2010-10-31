@@ -33,7 +33,7 @@ namespace Seivad
             return GetInstance(null);
         }
 
-        public Object GetInstance(params Arguments.Argument[] args)
+        public Object GetInstance(IArguments args)
         {
             if (IsSingleton == false)
             {
@@ -52,9 +52,9 @@ namespace Seivad
 
         }
 
-        private object CreateInstanceAndApplyAction(params Arguments.Argument[] args)
+        private object CreateInstanceAndApplyAction(IArguments args)
         {
-            var result = Activator.CreateInstance(ReturnType, args.Select(a => a.Value).ToArray());
+            var result = Activator.CreateInstance(ReturnType, args.GetArguments().Select(a => a.Value).ToArray());
 
             if (_onCreation != null)
             {
