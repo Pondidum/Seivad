@@ -7,7 +7,7 @@ namespace Seivad.Arguments
 {
     public abstract class Arguments
     {
-        static Argument Add(string name, Object value)
+        public static Argument Add(string name, Object value)
         {
             return new Argument(name, value);
         }

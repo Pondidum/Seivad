@@ -10,7 +10,8 @@ namespace Seivad
 
         private readonly IDictionary<Type, ObjectCreator> _registry;
 
-        public Container() {
+        public Container()
+        {
             _registry = new Dictionary<Type, ObjectCreator>();
         }
 
@@ -25,18 +26,24 @@ namespace Seivad
 
             if (_registry.ContainsKey(type))
                 throw new ArgumentException(string.Format("The type {0} has already been registered.", type.Name));
-            
+
             return new ObjectSetup<TRequest>(this);
         }
 
-        public T GetIntance<T>() {
+        public T GetInstance<T>()
+        {
+            return GetInstance<T>(null);
+        }
+
+        public T GetInstance<T>(params Arguments.Argument[] args)
+        {
 
             var type = typeof(T);
 
             if (!_registry.ContainsKey(type))
                 throw new ArgumentException(string.Format("The type {0} has not been registered", type.Name));
 
-            return (T)_registry[type].GetInstance();
+            return (T)_registry[type].GetInstance(args);
         }
 
     }

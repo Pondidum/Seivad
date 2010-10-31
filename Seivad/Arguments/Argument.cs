@@ -5,7 +5,7 @@ using System.Text;
 
 namespace Seivad.Arguments
 {
-    public abstract class Argument
+    public sealed class Argument
     {
         public string Name { get; private set; }
         public Object Value { get; private set; }
