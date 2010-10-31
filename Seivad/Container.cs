@@ -25,7 +25,7 @@ namespace Seivad
             var type = typeof(TRequest);
 
             if (_registry.ContainsKey(type))
-                throw new ArgumentException(string.Format("The type {0} has already been registered.", type.Name));
+                throw new RegistrationException(string.Format("The type {0} has already been registered.", type.Name));
 
             return new ObjectSetup<TRequest>(this);
         }
@@ -41,7 +41,7 @@ namespace Seivad
             var type = typeof(T);
 
             if (!_registry.ContainsKey(type))
-                throw new ArgumentException(string.Format("The type {0} has not been registered", type.Name));
+                throw new RegistrationException(string.Format("The type {0} has not been registered", type.Name));
 
             return (T)_registry[type].GetInstance(args);
         }
