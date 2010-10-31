@@ -35,7 +35,7 @@ namespace Seivad
             return GetInstance<T>(null);
         }
 
-        public T GetInstance<T>(params Arguments.Argument[] args)
+        public T GetInstance<T>(IArguments args)
         {
 
             var type = typeof(T);
