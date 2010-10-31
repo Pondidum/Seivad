@@ -43,6 +43,7 @@
     <Compile Include="Container.cs" />
     <Compile Include="ObjectCreator.cs" />
     <Compile Include="ObjectSetup.cs" />
+    <Compile Include="ParameterTest.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
