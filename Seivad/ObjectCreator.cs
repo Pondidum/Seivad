@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Reflection;
 
 namespace Seivad
 {
@@ -54,6 +55,16 @@ namespace Seivad
 
         private object CreateInstanceAndApplyAction(IArguments args)
         {
+
+            var constructors = ReturnType.GetConstructors();
+            var lengthMatches = constructors.Where(c => c.GetParameters().Count() == args.GetArguments().Count());
+
+            var matches = GetMatchingConstructors(lengthMatches, args);
+
+            if (matches.Count == 0) {
+                throw new NotSupportedException("Unable to find matching constructor");
+            }
+
             var result = Activator.CreateInstance(ReturnType, args.GetArguments().Select(a => a.Value).ToArray());
 
             if (_onCreation != null)
@@ -62,6 +73,24 @@ namespace Seivad
             }
 
             return result;
+        }
+
+        private List<ConstructorInfo> GetMatchingConstructors(IEnumerable<ConstructorInfo> constructors, IArguments args)
+        { 
+            var matches = new List<ConstructorInfo>();
+
+            foreach (var item in constructors)
+            {
+                var parameters = item.GetParameters().Select(p => p.Name);
+
+                if (args.GetArguments().All(a => parameters.Contains(a.Key)))
+                {
+                    matches.Add(item);
+                }
+            }
+
+
+            return matches;
         }
     }
 }
