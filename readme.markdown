@@ -12,6 +12,7 @@ Todo List:
 * Depends on Parameters
 * checks to see if any unsupplied parameter can be created
 * recursive? eg: A requires B which requires a C and Detc.
+* how to deal with cyclicity - A requires B which requires A 
 
 3. Object creation of unregistered types 
 ----------------------------------------
