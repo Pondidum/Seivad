@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Reflection;
 
 namespace Seivad
 {
@@ -54,7 +55,15 @@ namespace Seivad
 
         private object CreateInstanceAndApplyAction(IArguments args)
         {
-            var result = Activator.CreateInstance(ReturnType, args.GetArguments().Select(a => a.Value).ToArray());
+
+            var constructors = ReturnType.GetConstructors();
+            var matches = ConstructorsWithAllArguments(constructors, args);
+
+            if (matches.Count == 0) {
+                throw new NoConstructorFoundException();
+            }
+
+            var result = Activator.CreateInstance(ReturnType, args.ToDictionary().Select(a => a.Value).ToArray());
 
             if (_onCreation != null)
             {
@@ -63,5 +72,15 @@ namespace Seivad
 
             return result;
         }
+
+        private List<ConstructorInfo> ConstructorsWithAllArguments(IEnumerable<ConstructorInfo> constructors, IArguments args)
+        { 
+            //get constructors that contain all of the args
+            return constructors.Where(c => args.Names().All(name => c.GetParameters().Select(p => p.Name).Contains(name)))
+                               .OrderBy(c => c.GetParameters().Count())
+                               .ToList();
+        }
+
+        
     }
 }
