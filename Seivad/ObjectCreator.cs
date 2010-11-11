@@ -63,20 +63,6 @@ namespace Seivad
                 throw new NoConstructorFoundException();
             }
 
-            if (matches.Count == 1)  // not sure this can be used
-            {
-                return matches.First().Invoke(args.Values);
-            }
-            else if (matches.Where(m => m.GetParameters().Count() == args.Count).Any()) //at least one ctor with right number of arguments
-            {
-                //pick the one with the args in the correct order if we can
-            }
-            else  //has all of the args + at least one more, so see if we can resolve the arg
-            { 
-            
-            }
-
-
             var result = Activator.CreateInstance(ReturnType, args.ToDictionary().Select(a => a.Value).ToArray());
 
             if (_onCreation != null)
