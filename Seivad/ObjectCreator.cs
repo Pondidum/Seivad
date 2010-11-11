@@ -57,15 +57,27 @@ namespace Seivad
         {
 
             var constructors = ReturnType.GetConstructors();
-            var lengthMatches = constructors.Where(c => c.GetParameters().Count() == args.GetArguments().Count());
-
-            var matches = GetMatchingConstructors(lengthMatches, args);
+            var matches = ConstructorsWithAllArguments(constructors, args);
 
             if (matches.Count == 0) {
-                throw new NotSupportedException("Unable to find matching constructor");
+                throw new NoConstructorFoundException();
             }
 
-            var result = Activator.CreateInstance(ReturnType, args.GetArguments().Select(a => a.Value).ToArray());
+            if (matches.Count == 1)  // not sure this can be used
+            {
+                return matches.First().Invoke(args.Values);
+            }
+            else if (matches.Where(m => m.GetParameters().Count() == args.Count).Any()) //at least one ctor with right number of arguments
+            {
+                //pick the one with the args in the correct order if we can
+            }
+            else  //has all of the args + at least one more, so see if we can resolve the arg
+            { 
+            
+            }
+
+
+            var result = Activator.CreateInstance(ReturnType, args.ToDictionary().Select(a => a.Value).ToArray());
 
             if (_onCreation != null)
             {
@@ -75,22 +87,14 @@ namespace Seivad
             return result;
         }
 
-        private List<ConstructorInfo> GetMatchingConstructors(IEnumerable<ConstructorInfo> constructors, IArguments args)
+        private List<ConstructorInfo> ConstructorsWithAllArguments(IEnumerable<ConstructorInfo> constructors, IArguments args)
         { 
-            var matches = new List<ConstructorInfo>();
-
-            foreach (var item in constructors)
-            {
-                var parameters = item.GetParameters().Select(p => p.Name);
-
-                if (args.GetArguments().All(a => parameters.Contains(a.Key)))
-                {
-                    matches.Add(item);
-                }
-            }
-
-
-            return matches;
+            //get constructors that contain all of the args
+            return constructors.Where(c => args.Names().All(name => c.GetParameters().Select(p => p.Name).Contains(name)))
+                               .OrderBy(c => c.GetParameters().Count())
+                               .ToList();
         }
+
+        
     }
 }
