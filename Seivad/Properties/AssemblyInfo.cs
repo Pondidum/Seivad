@@ -34,3 +34,4 @@ using System.Runtime.InteropServices;
 // [assembly: AssemblyVersion("1.0.*")]
 [assembly: AssemblyVersion("1.0.0.0")]
 [assembly: AssemblyFileVersion("1.0.0.0")]
+[assembly: InternalsVisibleTo("Seivad.Specs, PublicKey=0024000004800000940000000602000000240000525341310004000001000100a1ba939706e16c2ab76aafa42ada8a9599f5dceb76cfaab06d097abf1d3cfc7fc32e239b067f34abae9ea5ca3a3d1ee97d100b33695c4775277e86dae9f23bfdfff8048951da4fc49fe856c8a223c24bed281f202c5ca6afc836cfd3340453ddddfa9f6c1effa0ae91b35bfa524f0a7be8d61f5b14402dd3c987b3e594c31dc0")]

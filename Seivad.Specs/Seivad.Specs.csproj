@@ -30,6 +30,12 @@
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
+  <PropertyGroup>
+    <SignAssembly>true</SignAssembly>
+  </PropertyGroup>
+  <PropertyGroup>
+    <AssemblyOriginatorKeyFile>..\Seivad.snk</AssemblyOriginatorKeyFile>
+  </PropertyGroup>
   <ItemGroup>
     <Reference Include="Machine.Specifications">
       <HintPath>..\..\SDK\PreCompiled\Machine.Specifications.dll</HintPath>
@@ -45,6 +51,7 @@
   <ItemGroup>
     <Compile Include="ConstructorSelector.cs" />
     <Compile Include="ContainerSpecs.cs" />
+    <Compile Include="ObjectCreator.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
@@ -52,6 +59,11 @@
       <Project>{B650B096-06F5-4F28-A089-D2AC51B885BB}</Project>
       <Name>Seivad</Name>
     </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="..\Seivad.snk">
+      <Link>Seivad.snk</Link>
+    </None>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

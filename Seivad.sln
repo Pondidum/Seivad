@@ -7,6 +7,11 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Seivad.Specs", "Seivad.Spec
 EndProject
 Project("{F184B08F-C81C-45F6-A57F-5ABD9991F28F}") = "Seivad.TestApp.Basic", "Seivad.TestApp.Basic\Seivad.TestApp.Basic.vbproj", "{0F8F7BF8-2AC2-40DA-9697-6C830DD49B59}"
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{0647299C-4DCE-433A-B8E7-E74E7D9C4526}"
+	ProjectSection(SolutionItems) = preProject
+		Seivad.snk = Seivad.snk
+	EndProjectSection
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
