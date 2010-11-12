@@ -50,7 +50,7 @@
     <Compile Include="ArgumentsDefinition.cs" />
     <Compile Include="Container.cs" />
     <Compile Include="IArguments.cs" />
-    <Compile Include="NoConstructorFoundException.cs" />
+    <Compile Include="ConstructorNotFoundException.cs" />
     <Compile Include="ObjectCreator.cs" />
     <Compile Include="ObjectSetup.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

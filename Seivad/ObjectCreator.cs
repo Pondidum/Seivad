@@ -60,7 +60,7 @@ namespace Seivad
             var matches = ConstructorsWithAllArguments(constructors, args);
 
             if (matches.Count == 0) {
-                throw new NoConstructorFoundException();
+                throw new ConstructorNotFoundException();
             }
 
             var result = Activator.CreateInstance(ReturnType, args.ToDictionary().Select(a => a.Value).ToArray());
