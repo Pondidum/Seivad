@@ -40,6 +40,9 @@
     <Reference Include="Machine.Specifications">
       <HintPath>..\..\SDK\PreCompiled\Machine.Specifications.dll</HintPath>
     </Reference>
+    <Reference Include="Rhino.Mocks">
+      <HintPath>..\packages\RhinoMocks.3.6\lib\Rhino.Mocks.dll</HintPath>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
     <Reference Include="System.Xml.Linq" />
@@ -50,7 +53,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="ContainerSpecs.cs" />
-    <Compile Include="ObjectCreator.cs" />
+    <Compile Include="ObjectCreatorSpecs.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
@@ -63,6 +66,7 @@
     <None Include="..\Seivad.snk">
       <Link>Seivad.snk</Link>
     </None>
+    <None Include="packages.config" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

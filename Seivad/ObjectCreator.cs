@@ -29,13 +29,10 @@ namespace Seivad
             _onCreation = action;
         }
 
-        public Object GetInstance()
+        internal Object GetInstance(IArguments args)
         {
-            return GetInstance(null);
-        }
+            if (args == null) throw new ArgumentNullException("args");
 
-        public Object GetInstance(IArguments args)
-        {
             if (IsSingleton == false)
             {
                 return CreateInstanceAndApplyAction(args);
@@ -55,12 +52,12 @@ namespace Seivad
 
         private object CreateInstanceAndApplyAction(IArguments args)
         {
-
             var constructors = ReturnType.GetConstructors();
             var matches = ConstructorsWithAllArguments(constructors, args);
 
-            if (matches.Count == 0) {
-                throw new ConstructorNotFoundException();
+            if (matches.Count == 0)
+            {
+                throw new ConstructorException("No matching public constructors found");
             }
 
             var result = Activator.CreateInstance(ReturnType, args.ToDictionary().Select(a => a.Value).ToArray());
@@ -74,13 +71,13 @@ namespace Seivad
         }
 
         private List<ConstructorInfo> ConstructorsWithAllArguments(IEnumerable<ConstructorInfo> constructors, IArguments args)
-        { 
+        {
             //get constructors that contain all of the args
             return constructors.Where(c => args.Names().All(name => c.GetParameters().Select(p => p.Name).Contains(name)))
                                .OrderBy(c => c.GetParameters().Count())
                                .ToList();
         }
 
-        
+
     }
 }
