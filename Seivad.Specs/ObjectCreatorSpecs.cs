@@ -7,44 +7,44 @@ using Rhino.Mocks;
 
 namespace Seivad.Specs
 {
+    public class NoRepositoryBase : SpecBase
+    {
+        static protected IArguments args;
+        static internal ObjectCreator objectCreator = new ObjectCreator();
+    }
+
     [Subject("With no Repository")]
-    public class When_passed_a_type_with_no_public_constructor_and_no_arguments
+    public class When_passed_a_type_with_no_public_constructor_and_no_arguments : NoRepositoryBase
     {
         Establish context = () => objectCreator.ReturnType = typeof(NoPublicConstructor);
         Because of = () => ex = Catch.Exception(() => objectCreator.GetInstance(new ArgumentsDefinition()));
 
         It should_throw_a_constuctor_exception = () => ex.ShouldBeOfType<ConstructorException>();
-
-        static ObjectCreator objectCreator = new ObjectCreator();
-        static Exception ex;
     }
 
     [Subject("With no Repository")]
-    public class When_passed_a_type_with_no_public_constructor_and_arguments
+    public class When_passed_a_type_with_no_public_constructor_and_arguments : NoRepositoryBase
     {
         Establish context = () => objectCreator.ReturnType = typeof(NoPublicConstructor);
         Because of = () => ex = Catch.Exception(() => objectCreator.GetInstance(new ArgumentsDefinition()));
 
         It should_throw_a_constructor_exception = () => ex.ShouldBeOfType<ConstructorException>();
 
-        static ObjectCreator objectCreator = new ObjectCreator();
-        static Exception ex;
     }
 
     [Subject("With no Repository")]
-    public class When_passed_a_type_with_only_a_default_constructor_and_no_arguments
+    public class When_passed_a_type_with_only_a_default_constructor_and_no_arguments : NoRepositoryBase
     {
         Establish context = () => objectCreator.ReturnType = typeof(DefaultConstructor);
         Because of = () => obj = objectCreator.GetInstance(new ArgumentsDefinition());
 
         It should_return_an_instance = () => obj.ShouldBeOfType<DefaultConstructor>();
 
-        static ObjectCreator objectCreator = new ObjectCreator();
-        static Object obj;
+        static object obj;
     }
 
     [Subject("With no Repository")]
-    public class When_passed_a_type_with_only_a_default_constructor_and_arguments
+    public class When_passed_a_type_with_only_a_default_constructor_and_arguments : NoRepositoryBase
     {
         Establish context = () =>
         {
@@ -59,13 +59,10 @@ namespace Seivad.Specs
 
         It should_throw_a_constructor_exception = () => ex.ShouldBeOfType<ConstructorException>();
 
-        static IArguments args;
-        static ObjectCreator objectCreator = new ObjectCreator();
-        static Exception ex;
     }
 
     [Subject("With no Repository")]
-    public class When_passed_a_type_with_one_parameterised_constructor_and_no_arguments
+    public class When_passed_a_type_with_one_parameterised_constructor_and_no_arguments : NoRepositoryBase
     {
         Establish context = () => objectCreator.ReturnType = typeof(ParameterisedOneArgument);
 
@@ -73,12 +70,10 @@ namespace Seivad.Specs
 
         It should_throw_a_constructor_exception = () => ex.ShouldBeOfType<ConstructorException>();
 
-        static ObjectCreator objectCreator = new ObjectCreator();
-        static Exception ex;
     }
 
     [Subject("With no Repository")]
-    public class When_passed_a_type_with_one_parameterised_constructor_and_one_nonmatching_by_name_argument
+    public class When_passed_a_type_with_one_parameterised_constructor_and_one_nonmatching_by_name_argument : NoRepositoryBase
     {
         Establish context = () =>
         {
@@ -93,13 +88,10 @@ namespace Seivad.Specs
 
         It should_throw_a_constructor_exception = () => ex.ShouldBeOfType<ConstructorException>();
 
-        static IArguments args;
-        static ObjectCreator objectCreator = new ObjectCreator();
-        static Exception ex;
     }
 
     [Subject("With no Repository")]
-    public class When_passed_a_type_with_one_parameterised_constructor_and_one_nonmatching_by_type_argument
+    public class When_passed_a_type_with_one_parameterised_constructor_and_one_nonmatching_by_type_argument : NoRepositoryBase
     {
         Establish context = () =>
         {
@@ -114,13 +106,10 @@ namespace Seivad.Specs
 
         It should_throw_a_constructor_exception = () => ex.ShouldBeOfType<ConstructorException>();
 
-        static IArguments args;
-        static ObjectCreator objectCreator = new ObjectCreator();
-        static Exception ex;
     }
 
     [Subject("With no Repository")]
-    public class When_passed_a_type_with_one_parameterised_constructor_and_one_matching_argument
+    public class When_passed_a_type_with_one_parameterised_constructor_and_one_matching_argument : NoRepositoryBase
     {
         Establish context = () =>
         {
@@ -135,13 +124,31 @@ namespace Seivad.Specs
 
         It should_return_an_instance = () => obj.ShouldBeOfType<ParameterisedOneArgument>();
 
-        static IArguments args;
-        static ObjectCreator objectCreator = new ObjectCreator();
-        static Object obj;
+        static object obj;
     }
 
 
 
+    [Subject("With no Repository")]
+    public class With_default_and_parameterised_constructors_and_no_arguments : NoRepositoryBase
+    { }
+
+
+    [Subject("With no Repository")]
+    public class With_default_and_parameterised_constructors_and_one_matching_argument : NoRepositoryBase
+    {
+
+    }
+
+
+    [Subject("With no Repository")]
+    public class With_default_and_parameterised_constructors_and_one_non_matching_by_name_argument : NoRepositoryBase
+    { }
+
+
+    [Subject("With no Repository")]
+    public class With_default_and_parameterised_constructors_and_one_non_matching_by_type_argument : NoRepositoryBase
+    { }
 
     class NoPublicConstructor
     {
