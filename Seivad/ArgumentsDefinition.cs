@@ -31,20 +31,7 @@ namespace Seivad
             return _arguments.ToDictionary(a => a.Item1, a => a.Item2);
         }
 
-        public IList<string> Names()
-        {
-            return _arguments.Select(a => a.Item1)
-                             .ToList();
-        }
-
-        public IList<object> Values()
-        {
-            return _arguments.Select(a => a.Item2)
-                             .ToList();
-        }
-
         public int Count { get { return _arguments.Count; } }
-
 
     }
 }

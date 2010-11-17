@@ -73,7 +73,7 @@ namespace Seivad
         private List<ConstructorInfo> ConstructorsWithAllArguments(IEnumerable<ConstructorInfo> constructors, IArguments args)
         {
             //get constructors that contain all of the args
-            return constructors.Where(c => args.Names().All(name => c.GetParameters().Select(p => p.Name).Contains(name)))
+            return constructors.Where(c => args.ToDictionary().Select(d => d.Key).All(name => c.GetParameters().Select(p => p.Name).Contains(name)))
                                .OrderBy(c => c.GetParameters().Count())
                                .ToList();
         }

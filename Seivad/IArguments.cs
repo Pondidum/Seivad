@@ -9,8 +9,6 @@ namespace Seivad
     {
         IArguments Add(string name, object value);
         IDictionary<string, object> ToDictionary();
-        IList<string> Names();
-        IList<object> Values();
 
         int Count { get; }
 

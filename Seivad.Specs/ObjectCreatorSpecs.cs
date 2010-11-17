@@ -50,7 +50,6 @@ namespace Seivad.Specs
         {
             args = MockRepository.GenerateMock<IArguments>();
             args.Expect(a => a.ToDictionary()).Return(new Dictionary<string, object>() { { "test", "value" } });
-            args.Expect(a => a.Names()).Return(new List<string>() { "test" });
 
             objectCreator.ReturnType = typeof(DefaultConstructor);
         };
@@ -79,7 +78,6 @@ namespace Seivad.Specs
         {
             args = MockRepository.GenerateMock<IArguments>();
             args.Expect(a => a.ToDictionary()).Return(new Dictionary<string, object>() { { "test", "value" } });
-            args.Expect(a => a.Names()).Return(new List<string>() { "test" });
 
             objectCreator.ReturnType = typeof(ParameterisedOneArgument);
         };
@@ -97,7 +95,6 @@ namespace Seivad.Specs
         {
             args = MockRepository.GenerateMock<IArguments>();
             args.Expect(a => a.ToDictionary()).Return(new Dictionary<string, object>() { { "argument", 10 } });
-            args.Expect(a => a.Names()).Return(new List<string>() { "argument" });
 
             objectCreator.ReturnType = typeof(ParameterisedOneArgument);
         };
@@ -115,7 +112,6 @@ namespace Seivad.Specs
         {
             args = MockRepository.GenerateMock<IArguments>();
             args.Expect(a => a.ToDictionary()).Return(new Dictionary<string, object>() { { "argument", "test" } });
-            args.Expect(a => a.Names()).Return(new List<string>() { "argument" });
 
             objectCreator.ReturnType = typeof(ParameterisedOneArgument);
         };
@@ -136,7 +132,6 @@ namespace Seivad.Specs
         {
             args = MockRepository.GenerateMock<IArguments>();
             args.Expect(a => a.ToDictionary()).Return(new Dictionary<string, object>());
-            args.Expect(a => a.Names()).Return(new List<string>());
 
             objectCreator.ReturnType = typeof(DefaultAndParameterisedOneArgument);
         };
@@ -157,7 +152,6 @@ namespace Seivad.Specs
         {
             args = MockRepository.GenerateMock<IArguments>();
             args.Expect(a => a.ToDictionary()).Return(new Dictionary<string, object>() { {"argument", "test" } });
-            args.Expect(a => a.Names()).Return(new List<string>() { "argument" });
 
             objectCreator.ReturnType = typeof(DefaultAndParameterisedOneArgument);
         };
@@ -178,7 +172,6 @@ namespace Seivad.Specs
         {
             args = MockRepository.GenerateMock<IArguments>();
             args.Expect(a => a.ToDictionary()).Return(new Dictionary<string, object>() { {"TEST", "test" } });
-            args.Expect(a => a.Names()).Return(new List<string>() { "TEST" });
 
             objectCreator.ReturnType = typeof(DefaultAndParameterisedOneArgument);
         };
@@ -199,7 +192,6 @@ namespace Seivad.Specs
         {
             args = MockRepository.GenerateMock<IArguments>();
             args.Expect(a => a.ToDictionary()).Return(new Dictionary<string, object>() { { "argument", 8 } });
-            args.Expect(a => a.Names()).Return(new List<string>() { "argument" });
 
             objectCreator.ReturnType = typeof(DefaultAndParameterisedOneArgument);
         };
