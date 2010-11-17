@@ -130,25 +130,91 @@ namespace Seivad.Specs
 
 
     [Subject("With no Repository")]
-    public class With_default_and_parameterised_constructors_and_no_arguments : NoRepositoryBase
-    { }
-
-
-    [Subject("With no Repository")]
-    public class With_default_and_parameterised_constructors_and_one_matching_argument : NoRepositoryBase
+    public class When_passed_a_type_with_default_and_parameterised_constructors_and_no_arguments : NoRepositoryBase
     {
+        Establish context = () =>
+        {
+            args = MockRepository.GenerateMock<IArguments>();
+            args.Expect(a => a.ToDictionary()).Return(new Dictionary<string, object>());
+            args.Expect(a => a.Names()).Return(new List<string>());
 
+            objectCreator.ReturnType = typeof(DefaultAndParameterisedOneArgument);
+        };
+
+        Because of = () => obj = objectCreator.GetInstance(args);
+
+        It should_return_an_instance = () => obj.ShouldNotBeNull();
+        It should_call_the_default_constructor = () => ((DefaultAndParameterisedOneArgument)obj).ConstructorCalled.ShouldEqual("Default");
+        
+        static object obj;
     }
 
 
     [Subject("With no Repository")]
-    public class With_default_and_parameterised_constructors_and_one_non_matching_by_name_argument : NoRepositoryBase
-    { }
+    public class When_passed_a_type_with_default_and_parameterised_constructors_and_one_matching_argument : NoRepositoryBase
+    {
+        Establish context = () =>
+        {
+            args = MockRepository.GenerateMock<IArguments>();
+            args.Expect(a => a.ToDictionary()).Return(new Dictionary<string, object>() { {"argument", "test" } });
+            args.Expect(a => a.Names()).Return(new List<string>() { "argument" });
+
+            objectCreator.ReturnType = typeof(DefaultAndParameterisedOneArgument);
+        };
+
+        Because of = () => obj = objectCreator.GetInstance(args);
+
+        It should_return_an_instance = () => obj.ShouldNotBeNull();
+        It should_call_the_parameterised_constructor = () => ((DefaultAndParameterisedOneArgument)obj).ConstructorCalled.ShouldEqual("Parameterised");
+
+        static object obj;
+    }
 
 
     [Subject("With no Repository")]
-    public class With_default_and_parameterised_constructors_and_one_non_matching_by_type_argument : NoRepositoryBase
-    { }
+    public class When_passed_a_type_with_default_and_parameterised_constructors_and_one_non_matching_by_name_argument : NoRepositoryBase
+    { 
+         Establish context = () =>
+        {
+            args = MockRepository.GenerateMock<IArguments>();
+            args.Expect(a => a.ToDictionary()).Return(new Dictionary<string, object>() { {"TEST", "test" } });
+            args.Expect(a => a.Names()).Return(new List<string>() { "TEST" });
+
+            objectCreator.ReturnType = typeof(DefaultAndParameterisedOneArgument);
+        };
+        
+        Because of = () => ex = Catch.Exception(() => obj = objectCreator.GetInstance(args));
+
+        It should_throw_a_constructor_exception = () => ex.ShouldBeOfType<ConstructorException>();
+
+        static object obj;
+    }
+
+
+    [Subject("With no Repository")]
+    public class When_passed_a_type_with_default_and_parameterised_constructors_and_one_non_matching_by_type_argument : NoRepositoryBase
+    {
+
+        Establish context = () =>
+        {
+            args = MockRepository.GenerateMock<IArguments>();
+            args.Expect(a => a.ToDictionary()).Return(new Dictionary<string, object>() { { "argument", 8 } });
+            args.Expect(a => a.Names()).Return(new List<string>() { "argument" });
+
+            objectCreator.ReturnType = typeof(DefaultAndParameterisedOneArgument);
+        };
+
+        Because of = () => ex = Catch.Exception(() => obj = objectCreator.GetInstance(args));
+
+        It should_throw_a_constructor_exception = () => ex.ShouldBeOfType<ConstructorException>();
+
+        static object obj;
+    
+    }
+
+
+
+
 
     class NoPublicConstructor
     {
@@ -168,6 +234,21 @@ namespace Seivad.Specs
     {
         public ParameterisedOneArgument(string argument)
         {
+        }
+    }
+
+    class DefaultAndParameterisedOneArgument
+    {
+        public string ConstructorCalled {get; private set;}
+
+        public DefaultAndParameterisedOneArgument()
+        { 
+            ConstructorCalled = "Default";
+        }
+
+        public DefaultAndParameterisedOneArgument(string argument)
+        { 
+            ConstructorCalled = "Parameterised";
         }
     }
 }
