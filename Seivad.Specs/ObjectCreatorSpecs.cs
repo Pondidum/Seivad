@@ -10,7 +10,12 @@ namespace Seivad.Specs
     public class NoRepositoryBase : SpecBase
     {
 
-        Because of = () => ex = Catch.Exception(() => obj = objectCreator.GetInstance(args));
+        Because of = () => {
+            ex = null;
+            obj = null;
+
+            ex = Catch.Exception(() => obj = objectCreator.GetInstance(args));
+        };
 
         static protected object obj;
         static protected IArguments args;
@@ -28,6 +33,7 @@ namespace Seivad.Specs
         };
 
         It should_throw_a_constuctor_exception = () => ex.ShouldBeOfType<ConstructorException>();
+        It should_not_create_an_instance = () => obj.ShouldBeNull();
     }
 
     [Subject("With no Repository")]
@@ -41,6 +47,7 @@ namespace Seivad.Specs
         };
 
         It should_throw_a_constructor_exception = () => ex.ShouldBeOfType<ConstructorException>();
+        It should_not_create_an_instance = () => obj.ShouldBeNull();
     }
 
     [Subject("With no Repository")]
@@ -67,6 +74,7 @@ namespace Seivad.Specs
         };
 
         It should_throw_a_constructor_exception = () => ex.ShouldBeOfType<ConstructorException>();
+        It should_not_create_an_instance = () => obj.ShouldBeNull();
     }
 
     [Subject("With no Repository")]
@@ -80,6 +88,7 @@ namespace Seivad.Specs
         };
 
         It should_throw_a_constructor_exception = () => ex.ShouldBeOfType<ConstructorException>();
+        It should_not_create_an_instance = () => obj.ShouldBeNull();
     }
 
     [Subject("With no Repository")]
@@ -106,6 +115,7 @@ namespace Seivad.Specs
         };
 
         It should_throw_a_constructor_exception = () => ex.ShouldBeOfType<ConstructorException>();
+        It should_not_create_an_instance = () => obj.ShouldBeNull();
     }
 
     [Subject("With no Repository")]
@@ -164,6 +174,7 @@ namespace Seivad.Specs
         };
 
         It should_throw_a_constructor_exception = () => ex.ShouldBeOfType<ConstructorException>();
+        It should_not_create_an_instance = () => obj.ShouldBeNull();
 
     }
 
@@ -180,6 +191,7 @@ namespace Seivad.Specs
         };
 
         It should_throw_a_constructor_exception = () => ex.ShouldBeOfType<ConstructorException>();
+        It should_not_create_an_instance = () => obj.ShouldBeNull();
     }
 
 
