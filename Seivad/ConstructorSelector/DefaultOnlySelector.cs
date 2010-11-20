@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Reflection;
 
 namespace Seivad.ConstructorSelector
 {
@@ -9,18 +10,18 @@ namespace Seivad.ConstructorSelector
     {
         public bool CanHandle(IList<ConstructorInfo> constructors, IArguments arguments)
         {
-            return _constructors.All(c => c.GetParameters().Count() == 0) && arguments.Count == 0;
+            return constructors.All(c => c.GetParameters().Count() == 0) && arguments.Count == 0;
         }
 
         public ConstructorInfo GetConstructor(IList<ConstructorInfo> constructors, IArguments arguments)
         {
-            if (!CanHandle(_constructors, arguments))
+            if (!CanHandle(constructors, arguments))
             {
                 throw new ConstructorException("No matching constructor found");
             }
 
             //is it even possible to have a type with more than one parameterless constructor?
-            return _constructors.First();
+            return constructors.First();
         }
     }
 }

@@ -48,6 +48,10 @@
   <ItemGroup>
     <Compile Include="Arguments.cs" />
     <Compile Include="ArgumentsDefinition.cs" />
+    <Compile Include="ConstructorSelector\ConstructorFactory.cs" />
+    <Compile Include="ConstructorSelector\DefaultOnlySelector.cs" />
+    <Compile Include="ConstructorSelector\IConstructorSelector.cs" />
+    <Compile Include="ConstructorSelector\ParameterisedOnlySelector.cs" />
     <Compile Include="Container.cs" />
     <Compile Include="IArguments.cs" />
     <Compile Include="ConstructorException.cs" />

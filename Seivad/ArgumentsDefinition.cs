@@ -2,12 +2,13 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Collections.Specialized;
 
 namespace Seivad
 {
     internal sealed class ArgumentsDefinition : IArguments
     {
-        private readonly IList<Tuple<string, object>> _arguments;
+        private readonly List<Tuple<string, object>> _arguments;
 
         internal ArgumentsDefinition()
         {
@@ -28,7 +29,11 @@ namespace Seivad
 
         public IDictionary<string, object> ToDictionary()
         {
-            return _arguments.ToDictionary(a => a.Item1, a => a.Item2);
+            var result = new OrderedDictionary();
+
+            _arguments.ForEach(a => result.Add(a.Item1, a.Item2));
+
+            return result;
         }
 
         public int Count { get { return _arguments.Count; } }
