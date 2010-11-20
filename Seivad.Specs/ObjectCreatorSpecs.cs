@@ -29,8 +29,7 @@ namespace Seivad.Specs
         Establish context = () =>
         {
             objectCreator.ReturnType = typeof(NoPublicConstructor);
-            args = MockRepository.GenerateMock<Arguments>();
-            args.Expect(a => a.ToDictionary()).Return(new Dictionary<string, object>());
+            args = MockRepository.GenerateStub<Arguments>();
         };
 
         It should_throw_a_constuctor_exception = () => ex.ShouldBeOfType<ConstructorException>();
@@ -43,8 +42,7 @@ namespace Seivad.Specs
         Establish context = () =>
         {
             objectCreator.ReturnType = typeof(NoPublicConstructor);
-            args = MockRepository.GenerateMock<Arguments>();
-            args.Expect(a => a.ToDictionary()).Return(new Dictionary<string, object>());
+            args = MockRepository.GenerateStub<Arguments>();
         };
 
         It should_throw_a_constructor_exception = () => ex.ShouldBeOfType<ConstructorException>();
@@ -59,8 +57,7 @@ namespace Seivad.Specs
         Establish context = () =>
         {
             objectCreator.ReturnType = typeof(DefaultConstructor);
-            args = MockRepository.GenerateMock<Arguments>();
-            args.Expect(a => a.ToDictionary()).Return(new Dictionary<string, object>());
+            args = MockRepository.GenerateStub<Arguments>();
         };
 
         It should_return_an_instance = () => obj.ShouldBeOfType<DefaultConstructor>();
@@ -72,8 +69,8 @@ namespace Seivad.Specs
         Establish context = () =>
         {
             objectCreator.ReturnType = typeof(DefaultConstructor);
-            args = MockRepository.GenerateMock<Arguments>();
-            args.Expect(a => a.ToDictionary()).Return(new Dictionary<string, object>() { { "test", "value" } });
+            args = MockRepository.GenerateStub<Arguments>();
+            args.Add("test", "value");
         };
 
         It should_throw_a_constructor_exception = () => ex.ShouldBeOfType<ConstructorException>();
@@ -88,8 +85,7 @@ namespace Seivad.Specs
         Establish context = () =>
         {
             objectCreator.ReturnType = typeof(ParameterisedOneArgument);
-            args = MockRepository.GenerateMock<Arguments>();
-            args.Expect(a => a.ToDictionary()).Return(new Dictionary<string, object>());
+            args = MockRepository.GenerateStub<Arguments>();
         };
 
         It should_throw_a_constructor_exception = () => ex.ShouldBeOfType<ConstructorException>();
@@ -102,8 +98,8 @@ namespace Seivad.Specs
         Establish context = () =>
         {
             objectCreator.ReturnType = typeof(ParameterisedOneArgument);
-            args = MockRepository.GenerateMock<Arguments>();
-            args.Expect(a => a.ToDictionary()).Return(new Dictionary<string, object>() { { "test", "value" } });
+            args = MockRepository.GenerateStub<Arguments>();
+            args.Add("test", "value");
         };
 
         It should_throw_a_constructor_exception = () => ex.ShouldBeOfType<ConstructorException>();
@@ -115,8 +111,8 @@ namespace Seivad.Specs
         Establish context = () =>
         {
             objectCreator.ReturnType = typeof(ParameterisedOneArgument);
-            args = MockRepository.GenerateMock<Arguments>();
-            args.Expect(a => a.ToDictionary()).Return(new Dictionary<string, object>() { { "argument", 10 } });
+            args = MockRepository.GenerateStub<Arguments>();
+            args.Add("argument", 10);
         };
 
         It should_throw_a_constructor_exception = () => ex.ShouldBeOfType<ConstructorException>();
@@ -129,8 +125,8 @@ namespace Seivad.Specs
         Establish context = () =>
         {
             objectCreator.ReturnType = typeof(ParameterisedOneArgument);
-            args = MockRepository.GenerateMock<Arguments>();
-            args.Expect(a => a.ToDictionary()).Return(new Dictionary<string, object>() { { "argument", "test" } });
+            args = MockRepository.GenerateStub<Arguments>();
+            args.Add("argument", "test");
         };
 
         It should_return_an_instance = () => obj.ShouldBeOfType<ParameterisedOneArgument>();
@@ -144,8 +140,7 @@ namespace Seivad.Specs
         Establish context = () =>
         {
             objectCreator.ReturnType = typeof(DefaultAndParameterisedOneArgument);
-            args = MockRepository.GenerateMock<Arguments>();
-            args.Expect(a => a.ToDictionary()).Return(new Dictionary<string, object>());
+            args = MockRepository.GenerateStub<Arguments>();
         };
 
         It should_return_an_instance = () => obj.ShouldNotBeNull();
@@ -158,8 +153,8 @@ namespace Seivad.Specs
         Establish context = () =>
         {
             objectCreator.ReturnType = typeof(DefaultAndParameterisedOneArgument);
-            args = MockRepository.GenerateMock<Arguments>();
-            args.Expect(a => a.ToDictionary()).Return(new Dictionary<string, object>() { { "argument", "test" } });
+            args = MockRepository.GenerateStub<Arguments>();
+            args.Add("argument", "test");
         };
 
         It should_return_an_instance = () => obj.ShouldNotBeNull();
@@ -172,8 +167,8 @@ namespace Seivad.Specs
         Establish context = () =>
         {
            objectCreator.ReturnType = typeof(DefaultAndParameterisedOneArgument);
-           args = MockRepository.GenerateMock<Arguments>();
-           args.Expect(a => a.ToDictionary()).Return(new Dictionary<string, object>() { { "TEST", "test" } });
+           args = MockRepository.GenerateStub<Arguments>();
+           args.Add("TEST", "test");
         };
 
         It should_throw_a_constructor_exception = () => ex.ShouldBeOfType<ConstructorException>();
@@ -188,8 +183,8 @@ namespace Seivad.Specs
         Establish context = () =>
         {
             objectCreator.ReturnType = typeof(DefaultAndParameterisedOneArgument);
-            args = MockRepository.GenerateMock<Arguments>();
-            args.Expect(a => a.ToDictionary()).Return(new Dictionary<string, object>() { { "argument", 8 } });
+            args = MockRepository.GenerateStub<Arguments>();
+            args.Add("argument", 8);
         };
 
         It should_throw_a_constructor_exception = () => ex.ShouldBeOfType<ConstructorException>();
