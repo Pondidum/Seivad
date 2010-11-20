@@ -4,6 +4,8 @@ using System.Linq;
 using System.Text;
 using System.Reflection;
 
+using Seivad.Args;
+
 namespace Seivad
 {
     internal class ObjectCreator
@@ -29,7 +31,7 @@ namespace Seivad
             _onCreation = action;
         }
 
-        internal Object GetInstance(IArguments args)
+        internal Object GetInstance(Arguments args)
         {
             if (args == null) throw new ArgumentNullException("args");
 
@@ -50,7 +52,7 @@ namespace Seivad
 
         }
 
-        private object CreateInstanceAndApplyAction(IArguments args)
+        private object CreateInstanceAndApplyAction(Arguments args)
         {
             var constructors = ReturnType.GetConstructors();
             //var matches = ConstructorsWithAllArguments(constructors, args);

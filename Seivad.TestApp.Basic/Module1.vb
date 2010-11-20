@@ -6,7 +6,7 @@
 
         container.Register(Of ITest).Returns(Of TestClass)()
 
-        Dim out = container.GetInstance(Of ITest)(Seivad.Arguments.Add("value", "testing").
+        Dim out = container.GetInstance(Of ITest)(Seivad.Args.Builder.Add("value", "testing").
                                                                    Add("another", "string"))
 
         Console.WriteLine(out.Test)

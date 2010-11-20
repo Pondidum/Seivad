@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using Machine.Specifications;
 using Rhino.Mocks;
+using Seivad.Args;
 
 namespace Seivad.Specs
 {
@@ -18,7 +19,7 @@ namespace Seivad.Specs
         };
 
         static protected object obj;
-        static protected IArguments args;
+        static protected Arguments args;
         static internal ObjectCreator objectCreator = new ObjectCreator();
     }
 
@@ -28,7 +29,7 @@ namespace Seivad.Specs
         Establish context = () =>
         {
             objectCreator.ReturnType = typeof(NoPublicConstructor);
-            args = MockRepository.GenerateMock<IArguments>();
+            args = MockRepository.GenerateMock<Arguments>();
             args.Expect(a => a.ToDictionary()).Return(new Dictionary<string, object>());
         };
 
@@ -42,7 +43,7 @@ namespace Seivad.Specs
         Establish context = () =>
         {
             objectCreator.ReturnType = typeof(NoPublicConstructor);
-            args = MockRepository.GenerateMock<IArguments>();
+            args = MockRepository.GenerateMock<Arguments>();
             args.Expect(a => a.ToDictionary()).Return(new Dictionary<string, object>());
         };
 
@@ -58,7 +59,7 @@ namespace Seivad.Specs
         Establish context = () =>
         {
             objectCreator.ReturnType = typeof(DefaultConstructor);
-            args = MockRepository.GenerateMock<IArguments>();
+            args = MockRepository.GenerateMock<Arguments>();
             args.Expect(a => a.ToDictionary()).Return(new Dictionary<string, object>());
         };
 
@@ -71,7 +72,7 @@ namespace Seivad.Specs
         Establish context = () =>
         {
             objectCreator.ReturnType = typeof(DefaultConstructor);
-            args = MockRepository.GenerateMock<IArguments>();
+            args = MockRepository.GenerateMock<Arguments>();
             args.Expect(a => a.ToDictionary()).Return(new Dictionary<string, object>() { { "test", "value" } });
         };
 
@@ -87,7 +88,7 @@ namespace Seivad.Specs
         Establish context = () =>
         {
             objectCreator.ReturnType = typeof(ParameterisedOneArgument);
-            args = MockRepository.GenerateMock<IArguments>();
+            args = MockRepository.GenerateMock<Arguments>();
             args.Expect(a => a.ToDictionary()).Return(new Dictionary<string, object>());
         };
 
@@ -101,7 +102,7 @@ namespace Seivad.Specs
         Establish context = () =>
         {
             objectCreator.ReturnType = typeof(ParameterisedOneArgument);
-            args = MockRepository.GenerateMock<IArguments>();
+            args = MockRepository.GenerateMock<Arguments>();
             args.Expect(a => a.ToDictionary()).Return(new Dictionary<string, object>() { { "test", "value" } });
         };
 
@@ -114,7 +115,7 @@ namespace Seivad.Specs
         Establish context = () =>
         {
             objectCreator.ReturnType = typeof(ParameterisedOneArgument);
-            args = MockRepository.GenerateMock<IArguments>();
+            args = MockRepository.GenerateMock<Arguments>();
             args.Expect(a => a.ToDictionary()).Return(new Dictionary<string, object>() { { "argument", 10 } });
         };
 
@@ -128,7 +129,7 @@ namespace Seivad.Specs
         Establish context = () =>
         {
             objectCreator.ReturnType = typeof(ParameterisedOneArgument);
-            args = MockRepository.GenerateMock<IArguments>();
+            args = MockRepository.GenerateMock<Arguments>();
             args.Expect(a => a.ToDictionary()).Return(new Dictionary<string, object>() { { "argument", "test" } });
         };
 
@@ -143,7 +144,7 @@ namespace Seivad.Specs
         Establish context = () =>
         {
             objectCreator.ReturnType = typeof(DefaultAndParameterisedOneArgument);
-            args = MockRepository.GenerateMock<IArguments>();
+            args = MockRepository.GenerateMock<Arguments>();
             args.Expect(a => a.ToDictionary()).Return(new Dictionary<string, object>());
         };
 
@@ -157,7 +158,7 @@ namespace Seivad.Specs
         Establish context = () =>
         {
             objectCreator.ReturnType = typeof(DefaultAndParameterisedOneArgument);
-            args = MockRepository.GenerateMock<IArguments>();
+            args = MockRepository.GenerateMock<Arguments>();
             args.Expect(a => a.ToDictionary()).Return(new Dictionary<string, object>() { { "argument", "test" } });
         };
 
@@ -171,7 +172,7 @@ namespace Seivad.Specs
         Establish context = () =>
         {
            objectCreator.ReturnType = typeof(DefaultAndParameterisedOneArgument);
-           args = MockRepository.GenerateMock<IArguments>();
+           args = MockRepository.GenerateMock<Arguments>();
            args.Expect(a => a.ToDictionary()).Return(new Dictionary<string, object>() { { "TEST", "test" } });
         };
 
@@ -187,7 +188,7 @@ namespace Seivad.Specs
         Establish context = () =>
         {
             objectCreator.ReturnType = typeof(DefaultAndParameterisedOneArgument);
-            args = MockRepository.GenerateMock<IArguments>();
+            args = MockRepository.GenerateMock<Arguments>();
             args.Expect(a => a.ToDictionary()).Return(new Dictionary<string, object>() { { "argument", 8 } });
         };
 

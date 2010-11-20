@@ -46,15 +46,13 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Arguments.cs" />
-    <Compile Include="ArgumentsDefinition.cs" />
-    <Compile Include="ConstructorSelector\ConstructorFactory.cs" />
-    <Compile Include="ConstructorSelector\DefaultOnlySelector.cs" />
-    <Compile Include="ConstructorSelector\IConstructorSelector.cs" />
-    <Compile Include="ConstructorSelector\ParameterisedOnlySelector.cs" />
+    <Compile Include="Args\Argument.cs" />
+    <Compile Include="Args\Arguments.cs" />
+    <Compile Include="Args\Builder.cs" />
+    <Compile Include="Args\IArguments.cs" />
     <Compile Include="Container.cs" />
-    <Compile Include="IArguments.cs" />
     <Compile Include="ConstructorException.cs" />
+    <Compile Include="IRegistry.cs" />
     <Compile Include="ObjectCreator.cs" />
     <Compile Include="ObjectSetup.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

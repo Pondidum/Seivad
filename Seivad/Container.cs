@@ -3,6 +3,8 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 
+using Seivad.Args;
+
 namespace Seivad
 {
     public class Container
@@ -35,7 +37,7 @@ namespace Seivad
             return GetInstance<T>(null);
         }
 
-        public T GetInstance<T>(IArguments args)
+        public T GetInstance<T>(Arguments args)
         {
 
             var type = typeof(T);
