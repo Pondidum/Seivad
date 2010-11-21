@@ -50,13 +50,16 @@
     <Compile Include="Args\Arguments.cs" />
     <Compile Include="Args\Builder.cs" />
     <Compile Include="Args\IArguments.cs" />
+    <Compile Include="ConstructorSelector\ConstructorFactory.cs">
+      <SubType>Code</SubType>
+    </Compile>
     <Compile Include="Container.cs" />
     <Compile Include="ConstructorException.cs" />
-    <Compile Include="IRegistry.cs" />
     <Compile Include="ObjectCreator.cs" />
     <Compile Include="ObjectSetup.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="RegistrationException.cs" />
+    <Compile Include="Registry.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="..\Seivad.snk">

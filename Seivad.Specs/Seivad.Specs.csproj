@@ -39,6 +39,7 @@
   <ItemGroup>
     <Reference Include="Machine.Specifications">
       <HintPath>..\..\SDK\PreCompiled\Machine.Specifications.dll</HintPath>
+      <Private>True</Private>
     </Reference>
     <Reference Include="Rhino.Mocks">
       <HintPath>..\packages\RhinoMocks.3.6\lib\Rhino.Mocks.dll</HintPath>
