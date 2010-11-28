@@ -7,9 +7,9 @@ using Seivad.Args;
 
 namespace Seivad.ConstructorSelector
 {
-    class Selector
+    internal class Selector
     {
-        Object GetConstructorData(IList<ConstructorInfo> constructors, Arguments args)
+       internal ConstructorData GetConstructorData(IList<ConstructorInfo> constructors, Arguments args)
         {
             /*
                 0:  No Constructors : Throw Ex
@@ -18,13 +18,13 @@ namespace Seivad.ConstructorSelector
                 3:  Onlt Parameterised, No Arguments : Throw Ex()
                 4:  Only Parameterised, Constructors with all args = 0 : Throw Ex
                 5:  Only Parameterised, Constructors with exact args : Invoke()
-                6:  Only Parameterised, Constructors with all args, repository cannot fill remainder : Throw Ex
-                7:  Only Parameterised, Constructors with all args, repository can fill remainder : Invoke()
+                6:  Only Parameterised, Constructors with all args, registry cannot fill remainder : Throw Ex
+                7:  Only Parameterised, Constructors with all args, registry can fill remainder : Invoke()
                 8:  Mixed Constructors, No Arguments : Invoke()
                 9:  Mixed Constructors, Constructors with all args = 0 : Throw Ex
                 10: Mixed Constructors, Constructors with exact args : Invoke()
-                11: Mixed Constructors, Constructors with all args, repository cannot fill remainder : Throw Ex
-                12: Mixed Constructors, Constructors with all args, repository can fill remainder : Invoke()
+                11: Mixed Constructors, Constructors with all args, registry cannot fill remainder : Throw Ex
+                12: Mixed Constructors, Constructors with all args, registry can fill remainder : Invoke()
             */
 
             //none
@@ -75,13 +75,13 @@ namespace Seivad.ConstructorSelector
 
                 //6
                 var unmatchedArgs = GetUnmatchedArgs(withAll, args);
-                if (!unmatchedArgs.Any(u => Repository.ContainsAll(u.Value)))
+                if (!unmatchedArgs.Any(u => registry.ContainsAll(u.Value)))
                 {
                     throw new ConstructorException();
                 }
 
                 //7
-                return GetBestMatch(exact, args, Repository.Get(unmatchedArgs)).Invoke(args);
+                return GetBestMatch(exact, args, registry.Get(unmatchedArgs)).Invoke(args);
             }
 
             //mixed
@@ -111,13 +111,13 @@ namespace Seivad.ConstructorSelector
 
                 //11
                 var unmatchedArgs = GetUnmatchedArgs(withAll, args);
-                if (!unmatchedArgs.Any(u => Repository.ContainsAll(u.Value)))
+                if (!unmatchedArgs.Any(u => registry.ContainsAll(u.Value)))
                 {
                     throw new ConstructorException();
                 }
 
                 //12
-                return GetBestMatch(exact, args, Repository.Get(unmatchedArgs)).Invoke(args);
+                return GetBestMatch(exact, args, registry.Get(unmatchedArgs)).Invoke(args);
             }
 
             throw new ConstructorException();
@@ -145,7 +145,7 @@ namespace Seivad.ConstructorSelector
         }
 
 
-        ConstructorInfo GetBestMatch(IEnumerable<ConstructorInfo> constructors, Arguments args, IList<Argument> repository)
+        ConstructorInfo GetBestMatch(IEnumerable<ConstructorInfo> constructors, Arguments args, IList<Argument> registry)
         {
 
             var ctors = constructors.Select(c => new ConstructorData
@@ -213,13 +213,5 @@ namespace Seivad.ConstructorSelector
 
     }
 
-    internal static class Extensions
-    {
-        public static bool Contains(this ParameterInfo[] parameters, Argument arg)
-        {
-
-            var argType = arg.Value.GetType();
-            return  parameters.Any(p => p.Name == arg.Name && p.ParameterType == argType);
-        }
-    }
+    
 }

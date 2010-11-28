@@ -50,6 +50,8 @@
     <Compile Include="Args\Arguments.cs" />
     <Compile Include="Args\Builder.cs" />
     <Compile Include="Args\IArguments.cs" />
+    <Compile Include="ConstructorSelector\ConstructorData.cs" />
+    <Compile Include="ConstructorSelector\Extensions.cs" />
     <Compile Include="ConstructorSelector\Selector.cs">
       <SubType>Code</SubType>
     </Compile>
