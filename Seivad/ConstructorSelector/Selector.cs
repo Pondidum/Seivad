@@ -7,9 +7,9 @@ using Seivad.Args;
 
 namespace Seivad.ConstructorSelector
 {
-    class ConstructorFactory
+    class Selector
     {
-        Object GetConstructor(IList<ConstructorInfo> constructors, Arguments args)
+        Object GetConstructorData(IList<ConstructorInfo> constructors, Arguments args)
         {
             /*
                 0:  No Constructors : Throw Ex
