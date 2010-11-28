@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Reflection;
 
 namespace Seivad.Args
 {
@@ -18,6 +19,12 @@ namespace Seivad.Args
         public bool Contains(string name)
         {
             return this.Any(a => a.Name == name);
+        }
+
+        public bool Contains(ParameterInfo param)
+        {
+            var paramType = param.ParameterType;
+            return this.Any(a => a.Name == param.Name && a.Value.GetType() == paramType);
         }
 
     }
