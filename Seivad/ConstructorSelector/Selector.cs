@@ -44,7 +44,7 @@ namespace Seivad.ConstructorSelector
                 }
 
                 //2
-                return constructors.First().Invoke(null);
+                return new ConstructorData(constructors.First(), null);
             }
 
 
@@ -70,7 +70,9 @@ namespace Seivad.ConstructorSelector
                 //5
                 if (exact.Count() > 0)
                 {
-                    return GetBestMatch(exact, args, null).Invoke(args);
+                    var best = GetBestMatch(exact, args, null);
+                    
+                    return new ConstructorData(best.Constructor, best.Arguments );
                 }
 
                 //6
@@ -91,7 +93,8 @@ namespace Seivad.ConstructorSelector
                 //8
                 if (args.Count == 0)
                 {
-                    return constructors.First(c => c.GetParameters().Count() == 0).Invoke(null);
+                    var ctor = constructors.First(c => c.GetParameters().Count() == 0);
+                    return new ConstructorData(ctor,null);
                 }
 
                 //9
@@ -106,7 +109,8 @@ namespace Seivad.ConstructorSelector
                 //10
                 if (exact.Count() > 0)
                 {
-                    return GetBestMatch(exact, args, new List<Argument>()).Invoke(args);
+                    var best = GetBestMatch(exact, args, new List<Argument>());
+                    return new ConstructorData(best.Constructor, best.Arguments );
                 }
 
                 //11
@@ -145,10 +149,10 @@ namespace Seivad.ConstructorSelector
         }
 
 
-        ConstructorInfo GetBestMatch(IEnumerable<ConstructorInfo> constructors, Arguments args, IList<Argument> registry)
+        ConstructorData GetBestMatch(IEnumerable<ConstructorInfo> constructors, Arguments args, IList<Argument> registry)
         {
 
-            var ctors = constructors.Select(c => new ConstructorData
+            var ctors = constructors.Select(c => new ConstructorMatchData
             {
                 Constructor = c,
                 Parameters = c.GetParameters().ToList(),
@@ -182,7 +186,7 @@ namespace Seivad.ConstructorSelector
 
             if (best.Count() == 1)
             {
-                return best.First().Constructor;
+                return new ConstructorData(best.First().Constructor, args.FilteredFor(best.First().Constructor ));
             }
 
             //apply the delta again to try and distinct the matches
@@ -196,13 +200,13 @@ namespace Seivad.ConstructorSelector
 
             if (best.Count() == 1)
             {
-                return best.First().Constructor;
+                return new ConstructorData(best.First().Constructor , args.FilteredFor(best.First().Constructor )); 
             }
 
             throw new ConstructorException();
         }
 
-        private class ConstructorData
+        private class ConstructorMatchData
         {
             public ConstructorInfo Constructor { get; set; }
             public List<ParameterInfo> Parameters { get; set; }

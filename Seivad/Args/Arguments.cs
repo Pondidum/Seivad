@@ -1,16 +1,29 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 using System.Reflection;
 
 namespace Seivad.Args
 {
     public class Arguments : List<Argument>
     {
+
+        internal  Arguments()
+        {
+            
+        }
+
+        internal Arguments(IEnumerable<Argument> args)
+        {
+            foreach (var argument in args)
+            {
+                Add(argument);
+            }
+        }
+
+
         public Arguments Add(string name, object value)
         {
-            base.Add(new Argument(name, value));
+            Add(new Argument(name, value));
             return this;
         }
 
@@ -27,5 +40,16 @@ namespace Seivad.Args
             return this.Any(a => a.Name == param.Name && a.Value.GetType() == paramType);
         }
 
+        internal Arguments FilteredFor(ConstructorInfo constructor)
+        {
+
+            var paramNames = constructor.GetParameters().Select(p => p.Name);
+
+            var args = this.Where(a => paramNames.Contains(a.Name));
+
+            return new Arguments(args);
+        }
+
     }
+
 }
