@@ -1,9 +1,5 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Reflection;
-
 using Seivad.Args;
 
 namespace Seivad
@@ -14,16 +10,18 @@ namespace Seivad
         public bool IsSingleton { get; set; }
 
         private Action<Object> _onCreation;
+        private readonly Registry _registry;
 
-        static readonly Object _padlock = new Object();
+        static readonly Object Padlock = new Object();
         static Object _instance;
 
-        internal ObjectCreator()
+        internal ObjectCreator(Registry registry)
         {
             ReturnType = null;
             IsSingleton = false;
 
             _onCreation = null;
+            _registry = registry;
         }
 
         public void SetOnCreation(Action<Object> action)
@@ -40,7 +38,7 @@ namespace Seivad
                 return CreateInstanceAndApplyAction(args);
             }
 
-            lock (_padlock)
+            lock (Padlock)
             {
                 if (_instance == null)
                 {
@@ -55,15 +53,11 @@ namespace Seivad
         private object CreateInstanceAndApplyAction(Arguments args)
         {
             var constructors = ReturnType.GetConstructors();
-            //var matches = ConstructorsWithAllArguments(constructors, args);
+           
+            var selector = new ConstructorSelector.Selector(_registry);
+            var constructorData = selector.GetConstructorData(constructors, args);
 
-            //if (matches.Count == 0)
-            //{
-            //    throw new ConstructorException("No matching public constructors found");
-            //}
-
-            //var result = Activator.CreateInstance(ReturnType, args.ToDictionary().Select(a => a.Value).ToArray());
-            object result = null;
+            object result = constructorData.Constructor.Invoke(constructorData.Arguments.Select(a => a.Value).ToArray());
 
             if (_onCreation != null)
             {

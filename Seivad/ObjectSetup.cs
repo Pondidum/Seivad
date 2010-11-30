@@ -9,13 +9,13 @@ namespace Seivad
     {
 
         private readonly ObjectCreator _creator;
-        private readonly Container _container;
+        private readonly Registry _registry;
 
-        internal ObjectSetup(Container container)
+        internal ObjectSetup(Registry registry)
         {
-            _container = container;
-            _creator = new ObjectCreator();
-            _container.AddRegistration(typeof(TRequest ), _creator);
+            _registry = registry;
+            _creator = new ObjectCreator(registry);
+            _registry.Add(typeof(TRequest ), _creator);
         }
 
         internal ObjectSetup(ObjectCreator creator)

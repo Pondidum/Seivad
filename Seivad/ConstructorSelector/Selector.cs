@@ -9,7 +9,14 @@ namespace Seivad.ConstructorSelector
 {
     internal class Selector
     {
-       internal ConstructorData GetConstructorData(IList<ConstructorInfo> constructors, Arguments args)
+        private readonly Registry _registry;
+
+        internal Selector(Registry registry)
+        {
+            _registry = registry;
+        }
+        
+        internal ConstructorData GetConstructorData(IList<ConstructorInfo> constructors, Arguments args)
         {
             /*
                 0:  No Constructors : Throw Ex
@@ -71,19 +78,20 @@ namespace Seivad.ConstructorSelector
                 if (exact.Count() > 0)
                 {
                     var best = GetBestMatch(exact, args, null);
-                    
-                    return new ConstructorData(best.Constructor, best.Arguments );
+
+                    return new ConstructorData(best.Constructor, best.Arguments);
                 }
 
                 //6
                 var unmatchedArgs = GetUnmatchedArgs(withAll, args);
-                if (!unmatchedArgs.Any(u => registry.ContainsAll(u.Value)))
+                if (!unmatchedArgs.Any(u => _registry.ContainsAll(u.Value.Select(p => p.ParameterType))))
                 {
                     throw new ConstructorException();
                 }
 
                 //7
-                return GetBestMatch(exact, args, registry.Get(unmatchedArgs)).Invoke(args);
+                var bestMatch = GetBestMatch(exact, args, unmatchedArgs);
+                return new ConstructorData(bestMatch.Constructor , bestMatch.Arguments);
             }
 
             //mixed
@@ -94,7 +102,7 @@ namespace Seivad.ConstructorSelector
                 if (args.Count == 0)
                 {
                     var ctor = constructors.First(c => c.GetParameters().Count() == 0);
-                    return new ConstructorData(ctor,null);
+                    return new ConstructorData(ctor, null);
                 }
 
                 //9
@@ -109,19 +117,20 @@ namespace Seivad.ConstructorSelector
                 //10
                 if (exact.Count() > 0)
                 {
-                    var best = GetBestMatch(exact, args, new List<Argument>());
-                    return new ConstructorData(best.Constructor, best.Arguments );
+                    var best = GetBestMatch(exact, args, new Dictionary<ConstructorInfo, IList<ParameterInfo>>()  );
+                    return new ConstructorData(best.Constructor, best.Arguments);
                 }
 
                 //11
                 var unmatchedArgs = GetUnmatchedArgs(withAll, args);
-                if (!unmatchedArgs.Any(u => registry.ContainsAll(u.Value)))
+                if (!unmatchedArgs.Any(u => _registry.ContainsAll(u.Value.Select(p => p.ParameterType))))
                 {
                     throw new ConstructorException();
                 }
 
                 //12
-                return GetBestMatch(exact, args, registry.Get(unmatchedArgs)).Invoke(args);
+                var bestMatch = GetBestMatch(exact, args, unmatchedArgs);
+                return new ConstructorData(bestMatch.Constructor, bestMatch.Arguments);
             }
 
             throw new ConstructorException();
@@ -149,7 +158,7 @@ namespace Seivad.ConstructorSelector
         }
 
 
-        ConstructorData GetBestMatch(IEnumerable<ConstructorInfo> constructors, Arguments args, IList<Argument> registry)
+        ConstructorData GetBestMatch(IEnumerable<ConstructorInfo> constructors, Arguments args, Dictionary<ConstructorInfo, IList<ParameterInfo>> unresolved)
         {
 
             var ctors = constructors.Select(c => new ConstructorMatchData
@@ -186,7 +195,7 @@ namespace Seivad.ConstructorSelector
 
             if (best.Count() == 1)
             {
-                return new ConstructorData(best.First().Constructor, args.FilteredFor(best.First().Constructor ));
+                return new ConstructorData(best.First().Constructor, args.FilteredFor(best.First().Constructor));
             }
 
             //apply the delta again to try and distinct the matches
@@ -200,7 +209,7 @@ namespace Seivad.ConstructorSelector
 
             if (best.Count() == 1)
             {
-                return new ConstructorData(best.First().Constructor , args.FilteredFor(best.First().Constructor )); 
+                return new ConstructorData(best.First().Constructor, args.FilteredFor(best.First().Constructor));
             }
 
             throw new ConstructorException();
@@ -217,5 +226,4 @@ namespace Seivad.ConstructorSelector
 
     }
 
-    
 }

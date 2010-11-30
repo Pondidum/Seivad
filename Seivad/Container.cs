@@ -10,11 +10,11 @@ namespace Seivad
     public class Container
     {
 
-        private readonly IDictionary<Type, ObjectCreator> _registry;
+        private readonly Registry  _registry;
 
         public Container()
         {
-            _registry = new Dictionary<Type, ObjectCreator>();
+            _registry = new Registry();
         }
 
         internal void AddRegistration(Type requestedType, ObjectCreator creator)
@@ -29,7 +29,7 @@ namespace Seivad
             if (_registry.ContainsKey(type))
                 throw new RegistrationException(string.Format("The type {0} has already been registered.", type.Name));
 
-            return new ObjectSetup<TRequest>(this);
+            return new ObjectSetup<TRequest>(_registry);
         }
 
         public T GetInstance<T>()
@@ -39,13 +39,7 @@ namespace Seivad
 
         public T GetInstance<T>(Arguments args)
         {
-
-            var type = typeof(T);
-
-            if (!_registry.ContainsKey(type))
-                throw new RegistrationException(string.Format("The type {0} has not been registered", type.Name));
-
-            return (T)_registry[type].GetInstance(args);
+          return  _registry.Get<T>(args);
         }
 
     }
