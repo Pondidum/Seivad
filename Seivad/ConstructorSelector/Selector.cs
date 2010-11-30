@@ -9,9 +9,9 @@ namespace Seivad.ConstructorSelector
 {
     internal class Selector
     {
-        private readonly Registry _registry;
+        private readonly IRegistry _registry;
 
-        internal Selector(Registry registry)
+        internal Selector(IRegistry registry)
         {
             _registry = registry;
         }

@@ -7,7 +7,7 @@ namespace Seivad.Args
     public class Arguments : List<Argument>
     {
 
-        internal  Arguments()
+        protected internal  Arguments()
         {
             
         }

@@ -4,7 +4,7 @@ using Seivad.Args;
 
 namespace Seivad
 {
-    internal  class Registry : Dictionary<Type, ObjectCreator>
+    internal  class Registry : Dictionary<Type, ObjectCreator>, IRegistry
     {
 
         public bool ContainsAll(IEnumerable<Type> types)

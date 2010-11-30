@@ -57,6 +57,7 @@
     </Compile>
     <Compile Include="Container.cs" />
     <Compile Include="ConstructorException.cs" />
+    <Compile Include="IRegistry.cs" />
     <Compile Include="ObjectCreator.cs" />
     <Compile Include="ObjectSetup.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

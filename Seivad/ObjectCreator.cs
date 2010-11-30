@@ -10,12 +10,12 @@ namespace Seivad
         public bool IsSingleton { get; set; }
 
         private Action<Object> _onCreation;
-        private readonly Registry _registry;
+        private readonly IRegistry _registry;
 
         static readonly Object Padlock = new Object();
         static Object _instance;
 
-        internal ObjectCreator(Registry registry)
+        internal ObjectCreator(IRegistry registry)
         {
             ReturnType = null;
             IsSingleton = false;

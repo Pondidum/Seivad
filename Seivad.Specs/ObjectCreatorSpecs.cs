@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using Machine.Specifications;
+﻿using Machine.Specifications;
 using Rhino.Mocks;
 using Seivad.Args;
 
@@ -10,17 +6,25 @@ namespace Seivad.Specs
 {
     public class NoRepositoryBase : SpecBase
     {
+        static NoRepositoryBase()
+        {
+            registry = MockRepository.GenerateMock<IRegistry>();
+            objectCreator = new ObjectCreator(registry);
+        }
 
-        Because of = () => {
+        Because of = () =>  
+        {
             ex = null;
             obj = null;
 
             ex = Catch.Exception(() => obj = objectCreator.GetInstance(args));
+
         };
 
         static protected object obj;
         static protected Arguments args;
-        static internal ObjectCreator objectCreator = new ObjectCreator();
+        static internal ObjectCreator objectCreator;
+        internal static IRegistry registry;
     }
 
     [Subject("With no Repository")]
@@ -29,7 +33,7 @@ namespace Seivad.Specs
         Establish context = () =>
         {
             objectCreator.ReturnType = typeof(NoPublicConstructor);
-            args = MockRepository.GenerateStub<Arguments>();
+           args = MockRepository.GenerateStub<Arguments>();
         };
 
         It should_throw_a_constuctor_exception = () => ex.ShouldBeOfType<ConstructorException>();
@@ -166,9 +170,9 @@ namespace Seivad.Specs
     {
         Establish context = () =>
         {
-           objectCreator.ReturnType = typeof(DefaultAndParameterisedOneArgument);
-           args = MockRepository.GenerateStub<Arguments>();
-           args.Add("TEST", "test");
+            objectCreator.ReturnType = typeof(DefaultAndParameterisedOneArgument);
+            args = MockRepository.GenerateStub<Arguments>();
+            args.Add("TEST", "test");
         };
 
         It should_throw_a_constructor_exception = () => ex.ShouldBeOfType<ConstructorException>();
