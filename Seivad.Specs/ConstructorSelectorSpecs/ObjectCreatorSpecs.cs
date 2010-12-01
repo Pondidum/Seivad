@@ -1,30 +1,41 @@
-﻿using Machine.Specifications;
+﻿using System.Linq;
+using System.Reflection;
+using Machine.Specifications;
 using Rhino.Mocks;
 using Seivad.Args;
+using Seivad.ConstructorSelector;
+using System.Collections.Generic;
 
-namespace Seivad.Specs
+namespace Seivad.Specs.ConstructorSelectorSpecs
 {
     public class NoRepositoryBase : SpecBase
     {
+        static internal ConstructorData constructorData;
+        static protected List<ConstructorInfo> constructors;
+        static protected Arguments args;
+        static internal Selector selector;
+
         static NoRepositoryBase()
         {
-            registry = MockRepository.GenerateMock<IRegistry>();
-            objectCreator = new ObjectCreator(registry);
+            selector = new Selector(MockRepository.GenerateMock<IRegistry>());
         }
 
-        Because of = () =>  
+        Because of = () =>
         {
             ex = null;
-            obj = null;
+            constructorData = null;
 
-            ex = Catch.Exception(() => obj = objectCreator.GetInstance(args));
+            ex = Catch.Exception(() => constructorData = selector.GetConstructorData(constructors, args)); // objectCreator.GetInstance(args));
 
         };
 
-        static protected object obj;
-        static protected Arguments args;
-        static internal ObjectCreator objectCreator;
-        internal static IRegistry registry;
+        protected static void AddConstructorsFor<T>()
+        {
+            if (constructors == null) constructors = new List<ConstructorInfo>();
+
+            constructors.AddRange(typeof(T).GetConstructors());
+        }
+
     }
 
     [Subject("With no Repository")]
@@ -32,12 +43,12 @@ namespace Seivad.Specs
     {
         Establish context = () =>
         {
-            objectCreator.ReturnType = typeof(NoPublicConstructor);
-           args = MockRepository.GenerateStub<Arguments>();
+            AddConstructorsFor<NoPublicConstructor>();
+            args = MockRepository.GenerateStub<Arguments>();
         };
 
         It should_throw_a_constuctor_exception = () => ex.ShouldBeOfType<ConstructorException>();
-        It should_not_create_an_instance = () => obj.ShouldBeNull();
+        It should_not_create_an_instance = () => constructorData.ShouldBeNull();
     }
 
     [Subject("With no Repository")]
@@ -45,12 +56,12 @@ namespace Seivad.Specs
     {
         Establish context = () =>
         {
-            objectCreator.ReturnType = typeof(NoPublicConstructor);
+            AddConstructorsFor<NoPublicConstructor>();
             args = MockRepository.GenerateStub<Arguments>();
         };
 
         It should_throw_a_constructor_exception = () => ex.ShouldBeOfType<ConstructorException>();
-        It should_not_create_an_instance = () => obj.ShouldBeNull();
+        It should_not_create_an_instance = () => constructorData.ShouldBeNull();
     }
 
 
@@ -60,11 +71,11 @@ namespace Seivad.Specs
     {
         Establish context = () =>
         {
-            objectCreator.ReturnType = typeof(DefaultConstructor);
+            AddConstructorsFor<DefaultConstructor>();
             args = MockRepository.GenerateStub<Arguments>();
         };
 
-        It should_return_an_instance = () => obj.ShouldBeOfType<DefaultConstructor>();
+        It should_return_an_instance = () => constructorData.ShouldBeOfType<DefaultConstructor>();
     }
 
     [Subject("With no Repository")]
@@ -72,13 +83,13 @@ namespace Seivad.Specs
     {
         Establish context = () =>
         {
-            objectCreator.ReturnType = typeof(DefaultConstructor);
+            AddConstructorsFor<DefaultConstructor>();
             args = MockRepository.GenerateStub<Arguments>();
             args.Add("test", "value");
         };
 
         It should_throw_a_constructor_exception = () => ex.ShouldBeOfType<ConstructorException>();
-        It should_not_create_an_instance = () => obj.ShouldBeNull();
+        It should_not_create_an_instance = () => constructorData.ShouldBeNull();
     }
 
 
@@ -88,12 +99,12 @@ namespace Seivad.Specs
     {
         Establish context = () =>
         {
-            objectCreator.ReturnType = typeof(ParameterisedOneArgument);
+            AddConstructorsFor<ParameterisedOneArgument>();
             args = MockRepository.GenerateStub<Arguments>();
         };
 
         It should_throw_a_constructor_exception = () => ex.ShouldBeOfType<ConstructorException>();
-        It should_not_create_an_instance = () => obj.ShouldBeNull();
+        It should_not_create_an_instance = () => constructorData.ShouldBeNull();
     }
 
     [Subject("With no Repository")]
@@ -101,7 +112,7 @@ namespace Seivad.Specs
     {
         Establish context = () =>
         {
-            objectCreator.ReturnType = typeof(ParameterisedOneArgument);
+            AddConstructorsFor<ParameterisedOneArgument>();
             args = MockRepository.GenerateStub<Arguments>();
             args.Add("test", "value");
         };
@@ -114,13 +125,13 @@ namespace Seivad.Specs
     {
         Establish context = () =>
         {
-            objectCreator.ReturnType = typeof(ParameterisedOneArgument);
+            AddConstructorsFor<ParameterisedOneArgument>();
             args = MockRepository.GenerateStub<Arguments>();
             args.Add("argument", 10);
         };
 
         It should_throw_a_constructor_exception = () => ex.ShouldBeOfType<ConstructorException>();
-        It should_not_create_an_instance = () => obj.ShouldBeNull();
+        It should_not_create_an_instance = () => constructorData.ShouldBeNull();
     }
 
     [Subject("With no Repository")]
@@ -128,12 +139,12 @@ namespace Seivad.Specs
     {
         Establish context = () =>
         {
-            objectCreator.ReturnType = typeof(ParameterisedOneArgument);
+            AddConstructorsFor<ParameterisedOneArgument>();
             args = MockRepository.GenerateStub<Arguments>();
             args.Add("argument", "test");
         };
 
-        It should_return_an_instance = () => obj.ShouldBeOfType<ParameterisedOneArgument>();
+        It should_return_an_instance = () => constructorData.ShouldBeOfType<ParameterisedOneArgument>();
     }
 
 
@@ -143,12 +154,12 @@ namespace Seivad.Specs
     {
         Establish context = () =>
         {
-            objectCreator.ReturnType = typeof(DefaultAndParameterisedOneArgument);
+            AddConstructorsFor<DefaultAndParameterisedOneArgument>();
             args = MockRepository.GenerateStub<Arguments>();
         };
 
-        It should_return_an_instance = () => obj.ShouldNotBeNull();
-        It should_call_the_default_constructor = () => ((DefaultAndParameterisedOneArgument)obj).ConstructorCalled.ShouldEqual("Default");
+        It should_return_an_instance = () => constructorData.ShouldNotBeNull();
+        It should_call_the_default_constructor = () => constructorData.Constructor.GetParameters().Count().ShouldEqual(0);
     }
 
     [Subject("With no Repository")]
@@ -156,13 +167,14 @@ namespace Seivad.Specs
     {
         Establish context = () =>
         {
-            objectCreator.ReturnType = typeof(DefaultAndParameterisedOneArgument);
+            AddConstructorsFor<DefaultAndParameterisedOneArgument>();
             args = MockRepository.GenerateStub<Arguments>();
             args.Add("argument", "test");
         };
 
-        It should_return_an_instance = () => obj.ShouldNotBeNull();
-        It should_call_the_parameterised_constructor = () => ((DefaultAndParameterisedOneArgument)obj).ConstructorCalled.ShouldEqual("Parameterised");
+        It should_return_an_instance = () => constructorData.ShouldNotBeNull();
+        It should_call_the_parameterised_constructor = () => constructorData.Constructor.GetParameters().Count().ShouldEqual(1);
+
     }
 
     [Subject("With no Repository")]
@@ -170,13 +182,13 @@ namespace Seivad.Specs
     {
         Establish context = () =>
         {
-            objectCreator.ReturnType = typeof(DefaultAndParameterisedOneArgument);
+            AddConstructorsFor<DefaultAndParameterisedOneArgument>();
             args = MockRepository.GenerateStub<Arguments>();
             args.Add("TEST", "test");
         };
 
         It should_throw_a_constructor_exception = () => ex.ShouldBeOfType<ConstructorException>();
-        It should_not_create_an_instance = () => obj.ShouldBeNull();
+        It should_not_create_an_instance = () => constructorData.ShouldBeNull();
 
     }
 
@@ -186,13 +198,13 @@ namespace Seivad.Specs
 
         Establish context = () =>
         {
-            objectCreator.ReturnType = typeof(DefaultAndParameterisedOneArgument);
+            AddConstructorsFor<DefaultAndParameterisedOneArgument>();
             args = MockRepository.GenerateStub<Arguments>();
             args.Add("argument", 8);
         };
 
         It should_throw_a_constructor_exception = () => ex.ShouldBeOfType<ConstructorException>();
-        It should_not_create_an_instance = () => obj.ShouldBeNull();
+        It should_not_create_an_instance = () => constructorData.ShouldBeNull();
     }
 
 
