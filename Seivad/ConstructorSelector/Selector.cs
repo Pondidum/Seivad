@@ -51,7 +51,7 @@ namespace Seivad.ConstructorSelector
                 }
 
                 //2
-                return new ConstructorData(constructors.First(), null);
+                return new ConstructorData(constructors.First());
             }
 
 
@@ -102,7 +102,7 @@ namespace Seivad.ConstructorSelector
                 if (args.Count == 0)
                 {
                     var ctor = constructors.First(c => c.GetParameters().Count() == 0);
-                    return new ConstructorData(ctor, null);
+                    return new ConstructorData(ctor);
                 }
 
                 //9
