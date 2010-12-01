@@ -36,6 +36,13 @@ namespace Seivad.Specs.ConstructorSelectorSpecs
             constructors.AddRange(typeof(T).GetConstructors());
         }
 
+        protected static void SetupDefaults()
+        {
+            constructors = null;
+            args = MockRepository.GenerateStub<Arguments>();
+        }
+
+
     }
 
     [Subject("With no Repository")]
@@ -43,8 +50,8 @@ namespace Seivad.Specs.ConstructorSelectorSpecs
     {
         Establish context = () =>
         {
+            SetupDefaults();
             AddConstructorsFor<NoPublicConstructor>();
-            args = MockRepository.GenerateStub<Arguments>();
         };
 
         It should_throw_a_constuctor_exception = () => ex.ShouldBeOfType<ConstructorException>();
@@ -56,8 +63,8 @@ namespace Seivad.Specs.ConstructorSelectorSpecs
     {
         Establish context = () =>
         {
+            SetupDefaults();
             AddConstructorsFor<NoPublicConstructor>();
-            args = MockRepository.GenerateStub<Arguments>();
         };
 
         It should_throw_a_constructor_exception = () => ex.ShouldBeOfType<ConstructorException>();
@@ -71,8 +78,8 @@ namespace Seivad.Specs.ConstructorSelectorSpecs
     {
         Establish context = () =>
         {
+            SetupDefaults();
             AddConstructorsFor<DefaultConstructor>();
-            args = MockRepository.GenerateStub<Arguments>();
         };
 
         It should_return_an_instance = () => constructorData.ShouldBeOfType<DefaultConstructor>();
@@ -83,8 +90,8 @@ namespace Seivad.Specs.ConstructorSelectorSpecs
     {
         Establish context = () =>
         {
+            SetupDefaults();
             AddConstructorsFor<DefaultConstructor>();
-            args = MockRepository.GenerateStub<Arguments>();
             args.Add("test", "value");
         };
 
@@ -99,8 +106,8 @@ namespace Seivad.Specs.ConstructorSelectorSpecs
     {
         Establish context = () =>
         {
+            SetupDefaults();
             AddConstructorsFor<ParameterisedOneArgument>();
-            args = MockRepository.GenerateStub<Arguments>();
         };
 
         It should_throw_a_constructor_exception = () => ex.ShouldBeOfType<ConstructorException>();
@@ -112,8 +119,8 @@ namespace Seivad.Specs.ConstructorSelectorSpecs
     {
         Establish context = () =>
         {
+            SetupDefaults();
             AddConstructorsFor<ParameterisedOneArgument>();
-            args = MockRepository.GenerateStub<Arguments>();
             args.Add("test", "value");
         };
 
@@ -125,8 +132,8 @@ namespace Seivad.Specs.ConstructorSelectorSpecs
     {
         Establish context = () =>
         {
+            SetupDefaults();
             AddConstructorsFor<ParameterisedOneArgument>();
-            args = MockRepository.GenerateStub<Arguments>();
             args.Add("argument", 10);
         };
 
@@ -139,8 +146,8 @@ namespace Seivad.Specs.ConstructorSelectorSpecs
     {
         Establish context = () =>
         {
+            SetupDefaults();
             AddConstructorsFor<ParameterisedOneArgument>();
-            args = MockRepository.GenerateStub<Arguments>();
             args.Add("argument", "test");
         };
 
@@ -154,8 +161,8 @@ namespace Seivad.Specs.ConstructorSelectorSpecs
     {
         Establish context = () =>
         {
+            SetupDefaults();
             AddConstructorsFor<DefaultAndParameterisedOneArgument>();
-            args = MockRepository.GenerateStub<Arguments>();
         };
 
         It should_return_an_instance = () => constructorData.ShouldNotBeNull();
@@ -167,8 +174,8 @@ namespace Seivad.Specs.ConstructorSelectorSpecs
     {
         Establish context = () =>
         {
+            SetupDefaults();
             AddConstructorsFor<DefaultAndParameterisedOneArgument>();
-            args = MockRepository.GenerateStub<Arguments>();
             args.Add("argument", "test");
         };
 
@@ -182,8 +189,8 @@ namespace Seivad.Specs.ConstructorSelectorSpecs
     {
         Establish context = () =>
         {
+            SetupDefaults();
             AddConstructorsFor<DefaultAndParameterisedOneArgument>();
-            args = MockRepository.GenerateStub<Arguments>();
             args.Add("TEST", "test");
         };
 
@@ -198,8 +205,8 @@ namespace Seivad.Specs.ConstructorSelectorSpecs
 
         Establish context = () =>
         {
+            SetupDefaults();
             AddConstructorsFor<DefaultAndParameterisedOneArgument>();
-            args = MockRepository.GenerateStub<Arguments>();
             args.Add("argument", 8);
         };
 
