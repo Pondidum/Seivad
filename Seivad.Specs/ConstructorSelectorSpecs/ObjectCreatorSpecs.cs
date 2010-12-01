@@ -151,7 +151,8 @@ namespace Seivad.Specs.ConstructorSelectorSpecs
             args.Add("argument", "test");
         };
 
-        It should_return_an_instance = () => constructorData.ShouldBeOfType<ParameterisedOneArgument>();
+        It should_return_the_constructor = () => constructorData.Constructor.GetParameters().Count().ShouldEqual(1);
+        It should_return_the_argument = () => constructorData.Arguments.ShouldContainOnly(args.First());
     }
 
 
