@@ -1,10 +1,10 @@
-﻿using System.Linq;
+﻿using System.Collections.Generic;
+using System.Linq;
 using System.Reflection;
 using Machine.Specifications;
 using Rhino.Mocks;
 using Seivad.Args;
 using Seivad.ConstructorSelector;
-using System.Collections.Generic;
 
 namespace Seivad.Specs.ConstructorSelectorSpecs
 {
@@ -55,7 +55,6 @@ namespace Seivad.Specs.ConstructorSelectorSpecs
         };
 
         It should_throw_a_constuctor_exception = () => ex.ShouldBeOfType<ConstructorException>();
-        It should_not_create_an_instance = () => constructorData.ShouldBeNull();
     }
 
     [Subject("With no Repository")]
@@ -68,7 +67,6 @@ namespace Seivad.Specs.ConstructorSelectorSpecs
         };
 
         It should_throw_a_constructor_exception = () => ex.ShouldBeOfType<ConstructorException>();
-        It should_not_create_an_instance = () => constructorData.ShouldBeNull();
     }
 
 
@@ -82,7 +80,8 @@ namespace Seivad.Specs.ConstructorSelectorSpecs
             AddConstructorsFor<DefaultConstructor>();
         };
 
-        It should_return_an_instance = () => constructorData.ShouldBeOfType<DefaultConstructor>();
+        It should_return_the_default_constructor = () => constructorData.Constructor.GetParameters().Count().ShouldEqual(0);
+        It should_not_return_any_arguments = () => constructorData.Arguments.ShouldBeEmpty();
     }
 
     [Subject("With no Repository")]
@@ -96,7 +95,6 @@ namespace Seivad.Specs.ConstructorSelectorSpecs
         };
 
         It should_throw_a_constructor_exception = () => ex.ShouldBeOfType<ConstructorException>();
-        It should_not_create_an_instance = () => constructorData.ShouldBeNull();
     }
 
 
@@ -111,7 +109,6 @@ namespace Seivad.Specs.ConstructorSelectorSpecs
         };
 
         It should_throw_a_constructor_exception = () => ex.ShouldBeOfType<ConstructorException>();
-        It should_not_create_an_instance = () => constructorData.ShouldBeNull();
     }
 
     [Subject("With no Repository")]
@@ -138,7 +135,6 @@ namespace Seivad.Specs.ConstructorSelectorSpecs
         };
 
         It should_throw_a_constructor_exception = () => ex.ShouldBeOfType<ConstructorException>();
-        It should_not_create_an_instance = () => constructorData.ShouldBeNull();
     }
 
     [Subject("With no Repository")]
@@ -155,6 +151,19 @@ namespace Seivad.Specs.ConstructorSelectorSpecs
         It should_return_the_argument = () => constructorData.Arguments.ShouldContainOnly(args.First());
     }
 
+    [Subject("With no repository")]
+    public class When_passed_a_type_with_only_parameterised_constructors_with_two_parameters_and_only_one_supplied : NoRepositoryBase
+    {
+        private Establish context = () =>
+        {
+            SetupDefaults();
+            AddConstructorsFor<ParameterisedTwoArguments>();
+            args.Add("argument", "string");
+        };
+
+        It should_throw_a_constructor_exception = () => ex.ShouldBeOfType<ConstructorException>();
+    }
+
 
 
     [Subject("With no Repository")]
@@ -166,8 +175,8 @@ namespace Seivad.Specs.ConstructorSelectorSpecs
             AddConstructorsFor<DefaultAndParameterisedOneArgument>();
         };
 
-        It should_return_an_instance = () => constructorData.ShouldNotBeNull();
-        It should_call_the_default_constructor = () => constructorData.Constructor.GetParameters().Count().ShouldEqual(0);
+        It should_return_the_default_constructor = () => constructorData.Constructor.GetParameters().Count().ShouldEqual(0);
+        It should_return_no_arguments = () => constructorData.Arguments.ShouldBeEmpty();
     }
 
     [Subject("With no Repository")]
@@ -180,8 +189,8 @@ namespace Seivad.Specs.ConstructorSelectorSpecs
             args.Add("argument", "test");
         };
 
-        It should_return_an_instance = () => constructorData.ShouldNotBeNull();
-        It should_call_the_parameterised_constructor = () => constructorData.Constructor.GetParameters().Count().ShouldEqual(1);
+        It should_return_the_parameterised_constructor = () => constructorData.Constructor.GetParameters().Count().ShouldEqual(1);
+        It should_return_the_argument = () => constructorData.Arguments.Select(a => a.Name).ShouldContainOnly("argument");
 
     }
 
@@ -196,8 +205,6 @@ namespace Seivad.Specs.ConstructorSelectorSpecs
         };
 
         It should_throw_a_constructor_exception = () => ex.ShouldBeOfType<ConstructorException>();
-        It should_not_create_an_instance = () => constructorData.ShouldBeNull();
-
     }
 
     [Subject("With no Repository")]
@@ -212,35 +219,48 @@ namespace Seivad.Specs.ConstructorSelectorSpecs
         };
 
         It should_throw_a_constructor_exception = () => ex.ShouldBeOfType<ConstructorException>();
-        It should_not_create_an_instance = () => constructorData.ShouldBeNull();
+    }
+
+    [Subject("With no Repository")]
+    public class When_passed_a_type_with_default_and_parameterised_constructor_with_two_arguments_and_one_matching_argument : NoRepositoryBase
+    {
+        private Establish context = () =>
+        {
+            SetupDefaults();
+            AddConstructorsFor<DefaultAndParameterisedTwoArguments>();
+            args.Add("argument", "string");
+        };
+
+        It should_throw_a_constructor_exception = () => ex.ShouldBeOfType<ConstructorException>();
     }
 
 
 
-
-
-    class NoPublicConstructor
+    internal class NoPublicConstructor
     {
         private NoPublicConstructor()
         {
         }
     }
 
-    class DefaultConstructor
+    internal class DefaultConstructor
     {
         public DefaultConstructor()
         {
         }
     }
 
-    class ParameterisedOneArgument
+    internal class ParameterisedOneArgument
     {
-        public ParameterisedOneArgument(string argument)
-        {
-        }
+        public ParameterisedOneArgument(string argument) { }
     }
 
-    class DefaultAndParameterisedOneArgument
+    internal class ParameterisedTwoArguments
+    {
+        public ParameterisedTwoArguments(string argument, int number) {}
+    }
+
+    internal class DefaultAndParameterisedOneArgument
     {
         public string ConstructorCalled { get; private set; }
 
@@ -253,5 +273,11 @@ namespace Seivad.Specs.ConstructorSelectorSpecs
         {
             ConstructorCalled = "Parameterised";
         }
+    }
+
+    internal class DefaultAndParameterisedTwoArguments
+    {
+        public  DefaultAndParameterisedTwoArguments() { }
+        public DefaultAndParameterisedTwoArguments(string argument, int number) { }
     }
 }
