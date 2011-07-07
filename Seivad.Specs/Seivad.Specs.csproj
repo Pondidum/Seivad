@@ -37,8 +37,9 @@
     <AssemblyOriginatorKeyFile>..\Seivad.snk</AssemblyOriginatorKeyFile>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="Machine.Specifications">
-      <HintPath>..\..\SDK\PreCompiled\Machine.Specifications.dll</HintPath>
+    <Reference Include="Machine.Specifications, Version=0.4.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\..\sdk\PreCompiled\Machine.Specifications.dll</HintPath>
+      <SpecificVersion>False</SpecificVersion>
       <Private>True</Private>
     </Reference>
     <Reference Include="Rhino.Mocks">
